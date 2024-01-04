@@ -12,7 +12,6 @@ import authImg from "../../../public/img-auth.jpg";
 
 export default function Login() {
   const router = useRouter();
-  const session = useSession();
   const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +47,7 @@ export default function Login() {
         // const token = session?.data?.user?.token;
         // console.log(token);
         setIsLoading(false);
-        router.push("/home");
+        router.push("/");
       }
     });
   };

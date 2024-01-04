@@ -7,17 +7,35 @@ import Image from "next/image";
 import img1 from "../../../../public/service.jpg";
 import img2 from "../../../../public/service2.jpg";
 import img3 from "../../../../public/service3.jpg";
-import InputForm from "@/components/InputForm";
-import SelectForm from "@/components/SelectForm";
-import TextArea from "@/components/TextArea";
-import Button from "@/components/Button";
 import CardPromo from "@/components/CardPromo";
+import FormKontak from "@/components/FormKontak";
+import { useEffect, useState } from "react";
+import { apiInstance } from "@/axios/instance";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const session = useSession();
-
   const token = session?.data?.user?.token;
-  console.log(token);
+  const [dataInfo, setDataInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    apiInstance
+      .get("/information")
+      .then((res) => {
+        setDataInfo(res.data.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  if (session?.data?.user?.role === "admin") {
+    router.push("/admin/transaksi");
+  }
+
   return (
     <div className="pt-16">
       <Carousel token={token} />
@@ -51,15 +69,14 @@ export default function Home() {
       </section>
       <section className="mt-16 xl:mt-36 px-2 lg:px-5">
         <h1 className="text-center text-2xl md:text-3xl font-bold mb-4">
-          Promo
+          Informasi
         </h1>
         <div className="flex flex-col gap-y-8 md:flex-row md:flex-wrap md:justify-center md:items-center md:gap-8 w-full">
-          <CardPromo src={img1} />
-          <CardPromo src={img1} />
-          <CardPromo src={img1} />
-          <CardPromo src={img1} />
-          <CardPromo src={img1} />
-          <CardPromo src={img1} />
+          {loading && <div>Loading....</div>}
+          {loading === false &&
+            dataInfo.map((data, index) => {
+              return <CardPromo key={index} data={data} />;
+            })}
         </div>
       </section>
       <section className="mt-16 xl:mt-36 px-2 py-16 lg:px-5 bg-main">
@@ -67,37 +84,7 @@ export default function Home() {
           Kontak Kami
         </h1>
         <div className="xl:flex xl:items-center xl:justify-around">
-          <form className="w-full flex flex-col justify-center items-center gap-y-2 xl:w-1/2 xl:border bg-light xl:border-slate-100 xl:rounded xl:p-3">
-            <InputForm label={"Nama"} type={"text"} placeholder={"Nama Anda"} />
-            <InputForm
-              label={"Email"}
-              type={"email"}
-              placeholder={"Email Anda"}
-            />
-            <InputForm
-              label={"No. HP"}
-              type={"text"}
-              placeholder={"Nomor Anda"}
-            />
-            <SelectForm label={"Pilih Layanan"} />
-            <TextArea label={"Pesan"} />
-            <div className="flex justify-around items-center w-full max-w-xs md:max-w-md ">
-              <Button
-                className={
-                  "w-[40%] bg-dark hover:bg-darker transition hover:text-light border-none"
-                }
-              >
-                Reset
-              </Button>
-              <Button
-                className={
-                  "w-[40%] bg-dark hover:bg-darker transition hover:text-light border-none"
-                }
-              >
-                Kirim
-              </Button>
-            </div>
-          </form>
+          <FormKontak token={token} />
           <div>
             <div className="hidden xl:block relative w-[35rem] h-[39rem] rounded-md overflow-hidden">
               <Image src={img1} alt="img-1" fill objectFit="cover" />

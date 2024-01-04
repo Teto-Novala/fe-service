@@ -4,6 +4,7 @@ import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";
 import Button from "./Button";
+import logo from "../../public/BTS-NEW-LOGO.png";
 
 export default function TopNavbar() {
   const { data: session } = useSession();
@@ -38,36 +39,112 @@ export default function TopNavbar() {
             tabIndex={0}
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
-            <li>
-              <Link href={"/home"} className="xl:text-xl">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link href={"/dokumentasi"} className="xl:text-xl">
-                Dokumentasi
-              </Link>
-            </li>
-            <li>
-              <Link href={"/layanan"} className="xl:text-xl">
-                Layanan
-              </Link>
-            </li>
+            {session?.user?.role === "user" && (
+              <>
+                <li>
+                  <Link href={"/home"} className="xl:text-xl">
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link href={"/dokumentasi"} className="xl:text-xl">
+                    Dokumentasi
+                  </Link>
+                </li>
+                <li>
+                  <Link href={"/layanan"} className="xl:text-xl">
+                    Layanan
+                  </Link>
+                </li>
+              </>
+            )}
+
+            {session?.user?.role === "admin" && (
+              <>
+                <li>
+                  <Link href={"/admin/transaksi"} className="xl:text-xl">
+                    Transaksi
+                  </Link>
+                </li>
+                <li>
+                  <Link href={"/admin/dokumentasi"} className="xl:text-xl">
+                    Dokumentasi
+                  </Link>
+                </li>
+                <li>
+                  <Link href={"/admin/layanan"} className="xl:text-xl">
+                    Layanan
+                  </Link>
+                </li>
+                <li>
+                  <Link href={"/admin/informasi"} className="xl:text-xl">
+                    Informasi
+                  </Link>
+                </li>
+                <li>
+                  <Link href={"/admin/kontak"} className="xl:text-xl">
+                    Kontak
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">Logo</a>
+        <Link href={"/"} className="btn btn-ghost text-xl">
+          <img src={logo.src} alt="logo" className="w-10 object-contain" />
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
-          <li>
-            <Link href={"/home"}>Home</Link>
-          </li>
-          <li>
-            <Link href={"/dokumentasi"}>Dokumentasi</Link>
-          </li>
-          <li>
-            <Link href={"/layanan"}>Layanan</Link>
-          </li>
+          {session?.user?.role === "user" && (
+            <>
+              <li>
+                <Link href={"/home"} className="xl:text-xl">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link href={"/dokumentasi"} className="xl:text-xl">
+                  Dokumentasi
+                </Link>
+              </li>
+              <li>
+                <Link href={"/layanan"} className="xl:text-xl">
+                  Layanan
+                </Link>
+              </li>
+            </>
+          )}
+
+          {session?.user?.role === "admin" && (
+            <>
+              <li>
+                <Link href={"/admin/transaksi"} className="xl:text-xl">
+                  Transaksi
+                </Link>
+              </li>
+              <li>
+                <Link href={"/admin/dokumentasi"} className="xl:text-xl">
+                  Dokumentasi
+                </Link>
+              </li>
+              <li>
+                <Link href={"/admin/layanan"} className="xl:text-xl">
+                  Layanan
+                </Link>
+              </li>
+              <li>
+                <Link href={"/admin/informasi"} className="xl:text-xl">
+                  Informasi
+                </Link>
+              </li>
+              <li>
+                <Link href={"/admin/kontak"} className="xl:text-xl">
+                  Kontak
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
       </div>
       <div className="navbar-end">

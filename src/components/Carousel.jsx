@@ -10,17 +10,9 @@ import { useRouter } from "next/navigation";
 
 export default function Carousel({ token }) {
   const router = useRouter();
-  console.log(token);
 
   function bookingHandler() {
-    if (!token) {
-      alert("anda belum login");
-      setTimeout(() => {
-        router.push("/login");
-      }, 1000);
-    } else {
-      router.push("/booking");
-    }
+    router.push("/booking");
   }
 
   return (

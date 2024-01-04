@@ -3,7 +3,7 @@ import React from "react";
 import img3 from "../../../../public/service3.jpg";
 import ImageDokumentasi from "@/components/ImageDokumentasi";
 
-export default function page() {
+export default function Page() {
   return (
     <section className="mt-20 md:mt-24 px-2 lg:px-5">
       <h1 className="text-2xl md:text-4xl font-bold text-center mb-4 md:mb-12">

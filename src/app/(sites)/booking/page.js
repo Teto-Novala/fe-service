@@ -5,11 +5,17 @@ import InputForm from "@/components/InputForm";
 import SelectForm from "@/components/SelectForm";
 import TextArea from "@/components/TextArea";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 export default function Booking() {
-  const { data: session } = useSession();
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated: () => {
+      alert("anda belum login");
+      redirect("/login");
+    },
+  });
   console.log("Booking : ", session);
   const [dataForm, setDataForm] = useState({
     name: "",
@@ -36,7 +42,7 @@ export default function Booking() {
           Authorization: `Bearer ${session.user?.token}`,
         },
       });
-      console.log("Form booking : ", res.data);
+      alert("data berhasil dikirim");
     } catch (error) {
       console.log(error);
     }
