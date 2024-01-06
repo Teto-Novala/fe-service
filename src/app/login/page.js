@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import Link from "next/link";
 import { userAction } from "@/store/user-slice";
-import authImg from "../../../public/img-auth.jpg";
+import authImg from "../../../public/service2.jpg";
 import toast from "react-hot-toast";
 
 export default function Login() {
@@ -130,7 +130,7 @@ export default function Login() {
                 Sign Up
               </Link>
             </p>
-            <p className="mt-4 md:mt-10">© 2023 BanyuGO</p>
+            <p className="mt-4 md:mt-10">© 2023 CV BAROKAH</p>
           </div>
         </div>
       </div>

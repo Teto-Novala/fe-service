@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function Booking() {
+  const router = useRouter();
   const { data: session } = useSession({
     required: true,
     onUnauthenticated: () => {
@@ -57,6 +58,7 @@ export default function Booking() {
       });
       // alert("data berhasil dikirim");
       toast.success("Berhasil Booking");
+      router.push("/transaksi");
     } catch (error) {
       toast.error("Gagal Booking");
       // console.log(error);

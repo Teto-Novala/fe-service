@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
-import authImg from "../../../public/img-auth.jpg";
+import authImg from "../../../public/service2.jpg";
 import { useDispatch } from "react-redux";
 import { userAction } from "@/store/user-slice";
 import toast from "react-hot-toast";
@@ -183,7 +183,7 @@ export default function Register() {
                                 Sign Up
                             </Link>
                         </p> */}
-            <p className="mt-4 md:mt-10">© 2023 BanyuGO</p>
+            <p className="mt-4 md:mt-10">© 2023 CV BAROKAH</p>
           </div>
         </div>
       </div>
