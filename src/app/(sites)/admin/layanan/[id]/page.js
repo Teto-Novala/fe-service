@@ -6,13 +6,15 @@ import SelectForm from "@/components/SelectForm";
 import { useSession } from "next-auth/react";
 import { redirect, useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Page() {
   const params = useParams();
   const { data: session } = useSession({
     required: true,
     onUnauthenticated: () => {
-      alert("Anda Belum Login");
+      // alert("Anda Belum Login");
+      toast.error("Anda Belum Login");
       redirect("/login");
     },
   });
@@ -28,7 +30,7 @@ export default function Page() {
   const token = session?.user?.token;
   const router = useRouter();
   if (session?.user?.role === "user") {
-    alert("Hanya untuk Admin");
+    toast.error("Hanya untuk Admin");
     router.back();
   }
 
@@ -50,7 +52,7 @@ export default function Page() {
         .catch((error) => {
           // handle error
           // alert("anda belum login");
-          console.log(error);
+          // console.log(error);
         });
     }
   }, [token]);
@@ -77,13 +79,13 @@ export default function Page() {
           "Content-Type": "multipart/form-data",
         },
       });
-      alert("Berhasil Mengupdate");
+      toast.success("Berhasil Mengupdate");
       setLoadingUpdate(false);
       router.push("/admin/layanan");
     } catch (error) {
       setLoadingUpdate(false);
-      alert("Error");
-      console.log(error);
+      toast.error("Gagal Mengupdate");
+      // console.log(error);
     }
   };
 

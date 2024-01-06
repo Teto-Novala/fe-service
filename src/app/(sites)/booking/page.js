@@ -7,16 +7,17 @@ import TextArea from "@/components/TextArea";
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Booking() {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated: () => {
-      alert("anda belum login");
+      // alert("anda belum login");
+      toast.error("Anda Belum Login");
       redirect("/login");
     },
   });
-  console.log("Booking : ", session);
   const [dataForm, setDataForm] = useState({
     name: "",
     phone: "",
@@ -36,20 +37,34 @@ export default function Booking() {
 
   async function formHandler(e) {
     e.preventDefault();
+    if (
+      dataForm.address === "" ||
+      dataForm.date === "" ||
+      dataForm.name === "" ||
+      dataForm.note === "" ||
+      dataForm.phone === "" ||
+      dataForm.service === "Pilih" ||
+      dataForm.type_service === "Pilih"
+    ) {
+      toast.error("Mohon Diisi");
+      return;
+    }
     try {
       const res = await apiInstance.post("/booking", dataForm, {
         headers: {
           Authorization: `Bearer ${session.user?.token}`,
         },
       });
-      alert("data berhasil dikirim");
+      // alert("data berhasil dikirim");
+      toast.success("Berhasil Booking");
     } catch (error) {
-      console.log(error);
+      toast.error("Gagal Booking");
+      // console.log(error);
     }
   }
 
   return (
-    <section className="mt-28">
+    <section className="pt-28 min-h-screen">
       <h1 className="text-center text-2xl md:text-3xl font-bold mb-4">
         Booking
       </h1>
@@ -108,16 +123,9 @@ export default function Booking() {
           />
           <div className="flex justify-around items-center w-full max-w-xs md:max-w-md ">
             <Button
-              className={
-                "w-[40%] bg-dark hover:bg-darker transition hover:text-light border-none"
-              }
-            >
-              Reset
-            </Button>
-            <Button
               type="submit"
               className={
-                "w-[40%] bg-dark hover:bg-darker transition hover:text-light border-none"
+                "w-full bg-dark hover:bg-darker transition hover:text-light border-none"
               }
             >
               Kirim

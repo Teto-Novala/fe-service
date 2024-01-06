@@ -6,13 +6,15 @@ import { useSession } from "next-auth/react";
 import { redirect } from "next/dist/server/api-utils";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Page() {
   const params = useParams();
   const { data: session } = useSession({
     required: true,
     onUnauthenticated: () => {
-      alert("Anda Belum Login");
+      // alert("Anda Belum Login");
+      toast.error("Anda Belum Login");
       redirect("/login");
     },
   });
@@ -26,7 +28,8 @@ export default function Page() {
   const token = session?.user?.token;
   const router = useRouter();
   if (session?.user?.role === "user") {
-    alert("Hanya untuk Admin");
+    // alert("Hanya untuk Admin");
+    toast.error("Hanya untuk Admin");
     router.back();
   }
   useEffect(() => {
@@ -47,7 +50,7 @@ export default function Page() {
         .catch((error) => {
           // handle error
           // alert("anda belum login");
-          console.log(error);
+          // console.log(error);
         });
     }
   }, [token]);
@@ -77,13 +80,15 @@ export default function Page() {
           },
         }
       );
-      alert("Berhasil Mengupdate");
+      // alert("Berhasil Mengupdate");
+      toast.success("Berhasil Mengupdate");
       setLoadingUpdate(false);
       router.push("/admin/dokumentasi");
     } catch (error) {
       setLoadingUpdate(false);
-      alert("Error");
-      console.log(error);
+      toast.error("Gagal Mengupdate");
+      // alert("Error");
+      // console.log(error);
     }
   };
   return (
@@ -114,7 +119,7 @@ export default function Page() {
                   onChange={onSelectFile}
                 />
                 {selectedFile && (
-                  <div className="bg-darker/75 py-3 xl:w-2/3 xl:mx-auto">
+                  <div className="bg-darker/75 py-3 xl:w-1/3 xl:mx-auto">
                     <img
                       src={selectedFile}
                       alt="bukti pembayaran"

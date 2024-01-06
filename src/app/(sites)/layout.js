@@ -4,7 +4,7 @@ import React from "react";
 
 export default function layout({ children }) {
   return (
-    <section>
+    <section className="bg-light">
       <TopNavbar />
       {children}
       <Footer />

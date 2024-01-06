@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 
 export default function Page() {
   return (
-    <main>
+    <main className="bg-light">
       <TopNavbar />
       <Home />
       <Footer />

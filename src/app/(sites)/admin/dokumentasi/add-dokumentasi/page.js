@@ -5,18 +5,21 @@ import InputForm from "@/components/InputForm";
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Page() {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated: () => {
-      alert("Anda belum login");
+      // alert("Anda belum login");
+      toast.error("Anda Belum Login");
       redirect("/login");
     },
   });
   const router = useRouter();
   if (session?.user?.role === "user") {
-    alert("Hanya untuk Admin");
+    // alert("Hanya untuk Admin");
+    toast.error("Hanya Untuk Admin");
     router.back();
   }
   const token = session?.user?.token;
@@ -61,10 +64,12 @@ export default function Page() {
           "Content-Type": "multipart/form-data",
         },
       });
-      alert("Berhasil Membuat Dokumentasi");
+      // alert("Berhasil Membuat Dokumentasi");
+      toast.success("Berhasil membuat dokumentasi");
       router.push("/admin/dokumentasi");
     } catch (error) {
-      console.log(error);
+      toast.error("Gagal membuat dokumentasi");
+      // console.log(error);
     }
   };
 

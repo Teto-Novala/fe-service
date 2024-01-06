@@ -5,13 +5,15 @@ import InputForm from "@/components/InputForm";
 import { useSession } from "next-auth/react";
 import { redirect, useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Page() {
   const params = useParams();
   const { data: session } = useSession({
     required: true,
     onUnauthenticated: () => {
-      alert("Anda Belum Login");
+      // alert("Anda Belum Login");
+      toast.error("Anda belum login");
       redirect("/login");
     },
   });
@@ -27,7 +29,8 @@ export default function Page() {
   const token = session?.user?.token;
   const router = useRouter();
   if (session?.user?.role === "user") {
-    alert("Hanya untuk Admin");
+    // alert("Hanya untuk Admin");
+    toast.error("Hanya untuk Admin");
     router.back();
   }
   useEffect(() => {
@@ -48,7 +51,7 @@ export default function Page() {
         .catch((error) => {
           // handle error
           // alert("anda belum login");
-          console.log(error);
+          // console.log(error);
         });
     }
   }, [token]);
@@ -75,13 +78,15 @@ export default function Page() {
           "Content-Type": "multipart/form-data",
         },
       });
-      alert("Berhasil Mengupdate");
+      // alert("Berhasil Mengupdate");
+      toast.success("Berhasil mengupdate");
       setLoadingUpdate(false);
       router.push("/admin/informasi");
     } catch (error) {
       setLoadingUpdate(false);
-      alert("Error");
-      console.log(error);
+      // alert("Error");
+      toast.error("Gagal Mengupdte");
+      // console.log(error);
     }
   };
 

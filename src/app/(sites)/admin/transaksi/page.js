@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ListAdmin from "./ListAdmin";
+import toast from "react-hot-toast";
 
 export default function TransaksiPage() {
   const [data, setData] = useState(null);
@@ -15,13 +16,13 @@ export default function TransaksiPage() {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated: () => {
-      alert("Anda Belum Login");
+      toast.error("Anda Belum Login");
       redirect("/");
     },
   });
   const token = session?.user?.token;
   if (session?.user?.role === "user") {
-    alert("Hanya Untuk Admin");
+    toast.error("Hanya Untuk Admin");
     router.push("/");
   }
   useEffect(() => {
@@ -47,7 +48,7 @@ export default function TransaksiPage() {
         .catch((error) => {
           // handle error
           // alert("anda belum login");
-          console.log(error);
+          // console.log(error);
         });
     }
   }, [token]);
@@ -59,14 +60,15 @@ export default function TransaksiPage() {
           Authorization: `Bearer ${token}`,
         },
       });
-      alert("Berhasil Verifikasi");
+      toast.success("Berhasil Verifikasi");
       setTimeout(() => {
         setDataUnverif((prevData) => {
           return prevData.filter((d) => d._id !== id);
         });
       }, 2000);
     } catch (error) {
-      console.log(error);
+      toast.error("Gagal Verifikasi");
+      // console.log(error);
     }
   };
   return (

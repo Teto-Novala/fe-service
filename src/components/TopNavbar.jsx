@@ -39,64 +39,6 @@ export default function TopNavbar() {
             tabIndex={0}
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
-            {session?.user?.role === "user" && (
-              <>
-                <li>
-                  <Link href={"/home"} className="xl:text-xl">
-                    Home
-                  </Link>
-                </li>
-                <li>
-                  <Link href={"/dokumentasi"} className="xl:text-xl">
-                    Dokumentasi
-                  </Link>
-                </li>
-                <li>
-                  <Link href={"/layanan"} className="xl:text-xl">
-                    Layanan
-                  </Link>
-                </li>
-              </>
-            )}
-
-            {session?.user?.role === "admin" && (
-              <>
-                <li>
-                  <Link href={"/admin/transaksi"} className="xl:text-xl">
-                    Transaksi
-                  </Link>
-                </li>
-                <li>
-                  <Link href={"/admin/dokumentasi"} className="xl:text-xl">
-                    Dokumentasi
-                  </Link>
-                </li>
-                <li>
-                  <Link href={"/admin/layanan"} className="xl:text-xl">
-                    Layanan
-                  </Link>
-                </li>
-                <li>
-                  <Link href={"/admin/informasi"} className="xl:text-xl">
-                    Informasi
-                  </Link>
-                </li>
-                <li>
-                  <Link href={"/admin/kontak"} className="xl:text-xl">
-                    Kontak
-                  </Link>
-                </li>
-              </>
-            )}
-          </ul>
-        </div>
-        <Link href={"/"} className="btn btn-ghost text-xl">
-          <img src={logo.src} alt="logo" className="w-10 object-contain" />
-        </Link>
-      </div>
-      <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          {session?.user?.role === "user" && (
             <>
               <li>
                 <Link href={"/home"} className="xl:text-xl">
@@ -114,37 +56,31 @@ export default function TopNavbar() {
                 </Link>
               </li>
             </>
-          )}
-
-          {session?.user?.role === "admin" && (
-            <>
-              <li>
-                <Link href={"/admin/transaksi"} className="xl:text-xl">
-                  Transaksi
-                </Link>
-              </li>
-              <li>
-                <Link href={"/admin/dokumentasi"} className="xl:text-xl">
-                  Dokumentasi
-                </Link>
-              </li>
-              <li>
-                <Link href={"/admin/layanan"} className="xl:text-xl">
-                  Layanan
-                </Link>
-              </li>
-              <li>
-                <Link href={"/admin/informasi"} className="xl:text-xl">
-                  Informasi
-                </Link>
-              </li>
-              <li>
-                <Link href={"/admin/kontak"} className="xl:text-xl">
-                  Kontak
-                </Link>
-              </li>
-            </>
-          )}
+          </ul>
+        </div>
+        <Link href={"/"} className="btn btn-ghost text-xl">
+          <img src={logo.src} alt="logo" className="w-10 object-contain" />
+        </Link>
+      </div>
+      <div className="navbar-center hidden lg:flex">
+        <ul className="menu menu-horizontal px-1">
+          <>
+            <li>
+              <Link href={"/home"} className="xl:text-xl">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link href={"/dokumentasi"} className="xl:text-xl">
+                Dokumentasi
+              </Link>
+            </li>
+            <li>
+              <Link href={"/layanan"} className="xl:text-xl">
+                Layanan
+              </Link>
+            </li>
+          </>
         </ul>
       </div>
       <div className="navbar-end">
@@ -158,17 +94,54 @@ export default function TopNavbar() {
               <IconUserCircle className="w-10 h-10 xl:w-10 xl:h-10" />
             </button>
             <ul
-              className={`bg-light ${
+              className={`bg-white ${
                 hidden ? "hidden" : "flex"
               } absolute z-[1] top-[4.4rem] right-0 w-1/2 md:w-1/3 xl:w-1/4 rounded-lg p-2 xl:py-2`}
             >
               <div className="w-full flex flex-col justify-center items-center gap-y-4">
-                <Link
-                  className="w-full md:w-2/3 text-center py-3 bg-dark hover:bg-darker transition rounded-lg"
-                  href={"/transaksi"}
-                >
-                  Transaksi
-                </Link>
+                {session?.user?.role === "admin" && (
+                  <>
+                    <Link
+                      href={"/admin/transaksi"}
+                      className="w-full md:w-2/3 text-center py-3 bg-dark hover:bg-darker transition rounded-lg"
+                    >
+                      Transaksi
+                    </Link>
+                    <Link
+                      href={"/admin/dokumentasi"}
+                      className="w-full md:w-2/3 text-center py-3 bg-dark hover:bg-darker transition rounded-lg"
+                    >
+                      Dokumentasi
+                    </Link>
+                    <Link
+                      href={"/admin/layanan"}
+                      className="w-full md:w-2/3 text-center py-3 bg-dark hover:bg-darker transition rounded-lg"
+                    >
+                      Layanan
+                    </Link>
+                    <Link
+                      href={"/admin/informasi"}
+                      className="w-full md:w-2/3 text-center py-3 bg-dark hover:bg-darker transition rounded-lg"
+                    >
+                      Informasi
+                    </Link>
+                    <Link
+                      href={"/admin/kontak"}
+                      className="w-full md:w-2/3 text-center py-3 bg-dark hover:bg-darker transition rounded-lg"
+                    >
+                      Kontak
+                    </Link>
+                  </>
+                )}
+                {session?.user?.role === "user" && (
+                  <Link
+                    className="w-full md:w-2/3 text-center py-3 bg-dark hover:bg-darker transition rounded-lg"
+                    href={"/transaksi"}
+                  >
+                    Transaksi
+                  </Link>
+                )}
+
                 <li className="w-full md:w-2/3">
                   <Button
                     onClick={() => signOut()}

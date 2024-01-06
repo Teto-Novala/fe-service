@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import Link from "next/link";
 import { userAction } from "@/store/user-slice";
 import authImg from "../../../public/img-auth.jpg";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const router = useRouter();
@@ -35,10 +36,11 @@ export default function Login() {
       if (res.error) {
         if (res.error === "user not verified") {
           dispatch(userAction.addToEmail(email));
-          alert("user belum diverifikasi");
+          toast.error("user belum diverifikasi");
           router.push("/verify-user");
         } else {
-          alert(res.error);
+          toast.error(res.error);
+          // alert(res.error);
         }
         setIsLoading(false);
       }
@@ -46,6 +48,7 @@ export default function Login() {
       if (!res.error) {
         // const token = session?.data?.user?.token;
         // console.log(token);
+        toast.success("Berhasil Login");
         setIsLoading(false);
         router.push("/");
       }
@@ -79,7 +82,7 @@ export default function Login() {
                 <input
                   type="email"
                   id="email"
-                  placeholder="mataringan@gmail.com"
+                  placeholder="your email"
                   className="rounded-lg border bg-[#F7FBFF] p-2"
                   onChange={(e) => setEmail(e.target.value)}
                 />

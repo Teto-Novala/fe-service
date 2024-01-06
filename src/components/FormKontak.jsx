@@ -4,6 +4,7 @@ import SelectForm from "./SelectForm";
 import TextArea from "./TextArea";
 import Button from "./Button";
 import { apiInstance } from "@/axios/instance";
+import toast from "react-hot-toast";
 
 export default function FormKontak({ token }) {
   const [data, setData] = useState({
@@ -25,6 +26,11 @@ export default function FormKontak({ token }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (token === undefined) {
+      // alert("Login Terlebih Dahulu");
+      toast.error("Login Terlebih Dahulu");
+      return;
+    }
     setLoading(true);
     if (
       data.name === "" ||
@@ -32,7 +38,8 @@ export default function FormKontak({ token }) {
       data.typeservice === "Pilih" ||
       data.message === ""
     ) {
-      alert("Mohon Diisi");
+      // alert("Mohon Diisi");
+      toast.error("Mohon Diisi");
       setLoading(false);
       return;
     }
@@ -43,10 +50,12 @@ export default function FormKontak({ token }) {
         },
       });
       setLoading(false);
-      alert("Berhasil Dikirim");
+      // alert("Berhasil Dikirim");
+      toast.success("Berhasil Dikirim");
     } catch (error) {
       setLoading(false);
-      console.log(error);
+      toast.error("Gagal Mengirim");
+      // console.log(error);
     }
   };
 

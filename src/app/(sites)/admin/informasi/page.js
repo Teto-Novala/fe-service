@@ -5,12 +5,14 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { redirect, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Page() {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated: () => {
-      alert("anda belum login");
+      // alert("anda belum login");
+      toast.error("Anda belum login");
       redirect("/login");
     },
   });
@@ -19,7 +21,8 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   if (session?.user?.role === "user") {
-    alert("Hanya untuk Admin");
+    // alert("Hanya untuk Admin");
+    toast.error("Hanya untuk Admin");
     router.back();
   }
   useEffect(() => {
@@ -38,7 +41,7 @@ export default function Page() {
         .catch((error) => {
           // handle error
           // alert("anda belum login");
-          console.log(error);
+          // console.log(error);
         });
     }
   }, [token]);
@@ -50,14 +53,16 @@ export default function Page() {
           Authorization: `Bearer ${token}`,
         },
       });
-      alert("Berhasil Menghapus");
+      // alert("Berhasil Menghapus");
+      toast.success("Berhasil Menghapus");
       setTimeout(() => {
         setData((prevData) => {
           return prevData.filter((d) => d._id !== id);
         });
       }, 2000);
     } catch (error) {
-      console.log(error);
+      toast.error("Gagal Menghapus");
+      // console.log(error);
     }
   };
 
@@ -78,9 +83,36 @@ export default function Page() {
           {loading === false &&
             data.map((data, index) => {
               return (
+                // <div
+                //   key={index}
+                //   className="rounded-lg flex flex-col gap-y-4 bg-dark md:w-1/3 xl:w-1/5 hover:bg-darker transition hover:shadow-xl"
+                // >
+                //   <div className="w-full">
+                //     <img
+                //       src={data.image}
+                //       className="w-full h-56 md:h-36 object-cover"
+                //       alt={data.title}
+                //     />
+                //   </div>
+                //   <div className="px-2">
+                //     <h2 className="text-2xl">{data.title}</h2>
+                //     <p>{data.description}</p>
+                //   </div>
+                //   <div className="flex items-center justify-center gap-x-5 mb-3">
+                //     <Button className={"bg-light hover:bg-darker transition"}>
+                //       <Link href={`/admin/informasi/${data._id}`}>Update</Link>
+                //     </Button>
+                //     <Button
+                //       onClick={() => deleteHandler(data._id)}
+                //       className={"bg-light hover:bg-darker transition"}
+                //     >
+                //       Delete
+                //     </Button>
+                //   </div>
+                // </div>
                 <div
                   key={index}
-                  className="rounded-lg flex flex-col gap-y-4 bg-dark md:w-1/3 xl:w-1/5 hover:bg-darker transition hover:shadow-xl"
+                  className="rounded-lg flex flex-col gap-y-4 bg-white md:w-1/3 xl:w-1/5 hover:bg-dark transition hover:shadow-xl"
                 >
                   <div className="w-full">
                     <img
@@ -94,12 +126,18 @@ export default function Page() {
                     <p>{data.description}</p>
                   </div>
                   <div className="flex items-center justify-center gap-x-5 mb-3">
-                    <Button className={"bg-light hover:bg-darker transition"}>
+                    <Button
+                      className={
+                        "bg-yellow-500 hover:bg-yellow-600 transition border-none"
+                      }
+                    >
                       <Link href={`/admin/informasi/${data._id}`}>Update</Link>
                     </Button>
                     <Button
                       onClick={() => deleteHandler(data._id)}
-                      className={"bg-light hover:bg-darker transition"}
+                      className={
+                        "bg-red-500 hover:bg-red-600 transition border-none"
+                      }
                     >
                       Delete
                     </Button>

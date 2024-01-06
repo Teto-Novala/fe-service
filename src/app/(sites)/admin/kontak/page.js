@@ -6,12 +6,14 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { redirect, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Page() {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated: () => {
-      alert("anda belum login");
+      // alert("anda belum login");
+      toast.error("Anda Belum Login");
       redirect("/login");
     },
   });
@@ -20,7 +22,8 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   if (session?.user?.role === "user") {
-    alert("Hanya untuk Admin");
+    // alert("Hanya untuk Admin");
+    toast.error("Hanya untuk Admin");
     router.back();
   }
   useEffect(() => {
@@ -39,27 +42,57 @@ export default function Page() {
         .catch((error) => {
           // handle error
           // alert("anda belum login");
-          console.log(error);
+          // console.log(error);
         });
     }
   }, [token]);
   const deleteHandler = async (id) => {
-    console.log("id delete", id);
-    // try {
-    //   const res = await apiInstance.delete(`/service/${id}`, {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   });
-    //   alert("Berhasil Menghapus");
-    //   setTimeout(() => {
-    //     setData((prevData) => {
-    //       return prevData.filter((d) => d._id !== id);
-    //     });
-    //   }, 2000);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    if (confirm("Apakah anda yakin ?")) {
+      try {
+        const res = await apiInstance.delete(`/contact/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        // alert("Berhasil Menghapus");
+        toast.success("Berhasil Menghapus");
+        setTimeout(() => {
+          setData((prevData) => {
+            return prevData.filter((d) => d._id !== id);
+          });
+        }, 2000);
+      } catch (error) {
+        toast.error("Gagal Menghapus");
+        // console.log(error);
+      }
+    } else {
+      return;
+    }
+  };
+  const deleteAllHandler = async (id) => {
+    if (data.length === 0) {
+      toast.error("Data Kosong");
+      return;
+    }
+    if (confirm("Apakah anda yakin ?")) {
+      try {
+        const res = await apiInstance.delete(`/contact`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        // alert("Berhasil Menghapus");
+        toast.success("Semua Berhasil Dihapus");
+        setTimeout(() => {
+          setData([]);
+        }, 2000);
+      } catch (error) {
+        toast.error("Semua Gagal Dihapus");
+        // console.log(error);
+      }
+    } else {
+      return;
+    }
   };
 
   return (
@@ -68,6 +101,16 @@ export default function Page() {
         <h1 className="text-center text-2xl md:text-3xl font-bold mb-7">
           Contact
         </h1>
+        <div>
+          <Button
+            onClick={deleteAllHandler}
+            className={
+              "bg-red-500 hover:bg-red-600 transition border-none text-white"
+            }
+          >
+            Delete All
+          </Button>
+        </div>
         <div className="mt-10 flex flex-col gap-y-4 md:flex-row md:flex-wrap w-full md:justify-center xl:justify-start md:gap-5 xl:gap-3 md:items-center">
           {loading && <div className="h-screen">Loading ...</div>}
           {loading === false &&
@@ -75,33 +118,47 @@ export default function Page() {
               return (
                 <div
                   key={index}
-                  className="rounded-lg p-3 flex flex-col  gap-y-4 bg-dark md:w-1/3 xl:w-1/5 md:overflow-x-auto hover:bg-darker transition hover:shadow-xl"
+                  className="w-full p-4 bg-white flex flex-col gap-y-4"
                 >
-                  <table className="w-full" cellPadding={5}>
-                    <tr className="border border-black">
-                      <td className="border border-black">Tipe Service</td>
-                      <td>{data.typeservice}</td>
-                    </tr>
-                    <tr className="border border-black">
-                      <td className="border border-black">Nama</td>
-                      <td>{data.name}</td>
-                    </tr>
-                    <tr className="border border-black">
-                      <td className="border border-black">Email</td>
-                      <td>{data.email}</td>
-                    </tr>
-                    <tr className="border border-black">
-                      <td className="border border-black">Message</td>
-                      <td>{data.message}</td>
-                    </tr>
-                  </table>
-                  <div className="flex items-center justify-center gap-x-5 mb-3">
-                    {/* <Button className={"bg-light hover:bg-darker transition"}>
-                  <Link href={`/admin/kontak/${data._id}`}>Update</Link>
-                </Button> */}
+                  <div className="w-full flex justify-between items-center">
+                    <p>Nama</p>
+                    <input
+                      type="text"
+                      value={data.name}
+                      readOnly
+                      className="border p-2 rounded-lg w-2/3"
+                    />
+                  </div>
+                  <div className="w-full flex justify-between items-center">
+                    <p>Email</p>
+                    <input
+                      type="text"
+                      value={data.email}
+                      readOnly
+                      className="border p-2 rounded-lg w-2/3"
+                    />
+                  </div>
+                  <div className="w-full flex justify-between items-center">
+                    <p>Tipe Service</p>
+                    <input
+                      type="text"
+                      value={data.typeservice}
+                      readOnly
+                      className="border p-2 rounded-lg w-2/3"
+                    />
+                  </div>
+                  <div className="w-full flex justify-between items-center">
+                    <p>Message</p>
+                    <textarea readOnly className="border p-2 rounded-lg w-2/3">
+                      {data.message}
+                    </textarea>
+                  </div>
+                  <div className="w-full">
                     <Button
                       onClick={() => deleteHandler(data._id)}
-                      className={"bg-light hover:bg-darker transition"}
+                      className={
+                        "bg-red-500 hover:bg-red-600 transition border-none w-full text-white"
+                      }
                     >
                       Delete
                     </Button>

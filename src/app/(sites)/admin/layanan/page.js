@@ -5,12 +5,13 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Page() {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated: () => {
-      alert("anda belum login");
+      toast.error("anda belum login");
       redirect("/login");
     },
   });
@@ -19,7 +20,7 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   if (session?.user?.role === "user") {
-    alert("Hanya untuk Admin");
+    toast.error("Hanya untuk Admin");
     router.back();
   }
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function Page() {
         .catch((error) => {
           // handle error
           // alert("anda belum login");
-          console.log(error);
+          // console.log(error);
         });
     }
   }, [token]);
@@ -49,14 +50,15 @@ export default function Page() {
           Authorization: `Bearer ${token}`,
         },
       });
-      alert("Berhasil Menghapus");
+      toast.success("Berhasil Menghapus");
       setTimeout(() => {
         setData((prevData) => {
           return prevData.filter((d) => d._id !== id);
         });
       }, 2000);
     } catch (error) {
-      console.log(error);
+      toast.error("Gagal Menghapus");
+      // console.log(error);
     }
   };
 
@@ -79,7 +81,7 @@ export default function Page() {
               return (
                 <div
                   key={index}
-                  className="rounded-lg flex flex-col gap-y-4 bg-dark md:w-1/3 xl:w-1/5 hover:bg-darker transition hover:shadow-xl"
+                  className="rounded-lg flex flex-col gap-y-4 bg-white md:w-1/3 xl:w-1/5 hover:bg-dark transition hover:shadow-xl"
                 >
                   <div className="w-full">
                     <img
@@ -94,12 +96,18 @@ export default function Page() {
                     <p>{data.detailService}</p>
                   </div>
                   <div className="flex items-center justify-center gap-x-5 mb-3">
-                    <Button className={"bg-light hover:bg-darker transition"}>
+                    <Button
+                      className={
+                        "bg-yellow-500 hover:bg-yellow-600 transition border-none"
+                      }
+                    >
                       <Link href={`/admin/layanan/${data._id}`}>Update</Link>
                     </Button>
                     <Button
                       onClick={() => deleteHandler(data._id)}
-                      className={"bg-light hover:bg-darker transition"}
+                      className={
+                        "bg-red-500 hover:bg-red-600 transition border-none"
+                      }
                     >
                       Delete
                     </Button>

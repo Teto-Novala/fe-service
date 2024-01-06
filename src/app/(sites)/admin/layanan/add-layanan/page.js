@@ -6,18 +6,19 @@ import SelectForm from "@/components/SelectForm";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Page() {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated: () => {
-      alert("Anda belum login");
+      toast.error("Anda belum login");
       redirect("/login");
     },
   });
   const router = useRouter();
   if (session?.user?.role === "user") {
-    alert("Hanya untuk Admin");
+    toast.error("Hanya untuk Admin");
     router.back();
   }
   const token = session?.user?.token;
@@ -65,12 +66,13 @@ export default function Page() {
           "Content-Type": "multipart/form-data",
         },
       });
-      alert("Berhasil Membuat Layanan");
+      toast.success("Berhasil Membuat Layanan");
       setLoading(false);
       router.push("/admin/layanan");
     } catch (error) {
       setLoading(false);
-      console.log(error);
+      toast.error("Gagal Membuat Layanan");
+      // console.log(error);
     }
   };
   const resetHandler = () => {
@@ -130,15 +132,8 @@ export default function Page() {
             )}
             <div className="w-full flex items-center justify-center gap-x-4">
               <Button
-                type="button"
-                onClick={resetHandler}
-                className={"bg-dark hover:bg-darker transition w-[40%]"}
-              >
-                Reset
-              </Button>
-              <Button
                 type="submit"
-                className={"bg-dark hover:bg-darker transition w-[40%]"}
+                className={"bg-dark hover:bg-darker transition w-2/3"}
               >
                 {loading ? "Loading" : "Add"}
               </Button>

@@ -4,6 +4,7 @@ import { IconInfoCircleFilled } from "@tabler/icons-react";
 import Image from "next/image";
 import { redirect, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function List({ data, token }) {
   const [show, setShow] = useState(false);
@@ -49,11 +50,13 @@ export default function List({ data, token }) {
           },
         }
       );
-      alert("Data Berhasil Dikirim");
+      // alert("Data Berhasil Dikirim");
+      toast.success("Data Berhasil Dikirim");
       setShow(false);
-      redirect("/transaksi");
+      // redirect("/transaksi");
     } catch (error) {
-      console.log(error);
+      toast.error("Gagal Bayar");
+      // console.log(error);
     }
   };
 
@@ -114,7 +117,7 @@ export default function List({ data, token }) {
                   <td>{data.booking.note}</td>
                 </tr>
               </table>
-              {data.status === "Belum Terverifikasi" && (
+              {data.status === "Belum Terverifikasi" && data.image === "" && (
                 <>
                   <p>Bukti Pembayaran : </p>
                   <input
@@ -135,7 +138,7 @@ export default function List({ data, token }) {
               )}
               <div className="flex items-center gap-x-3">
                 <Button onClick={() => setShow(false)}>Tutup</Button>
-                {data.status === "Belum Terverifikasi" && (
+                {data.status === "Belum Terverifikasi" && data.image === "" && (
                   <Button onClick={payHandler}>Bayar</Button>
                 )}
               </div>

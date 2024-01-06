@@ -8,6 +8,7 @@ import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import authImg from "../../../public/img-auth.jpg";
 import { useDispatch } from "react-redux";
 import { userAction } from "@/store/user-slice";
+import toast from "react-hot-toast";
 
 export default function Register() {
   const router = useRouter();
@@ -47,11 +48,13 @@ export default function Register() {
     try {
       await registerApi({ name, email, phone, password }).then((res) => {
         // console.log(res);
-        alert("sukses, silahkan cek email untuk verifikasi");
+        // alert("sukses, silahkan cek email untuk verifikasi");
+        toast.success("sukses, silahkan cek email untuk verifikasi");
         router.push("/verify-user");
       });
     } catch (error) {
-      console.log(error);
+      toast.error("Gagal Registrasi");
+      // console.log(error);
     }
   };
 

@@ -35,7 +35,7 @@ export default function Layanan() {
         setLoadingCCTV(false);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
   }, []);
 
@@ -49,7 +49,7 @@ export default function Layanan() {
   }
 
   return (
-    <section className="mt-28 px-2 lg:px-5 font-bold">
+    <section className="pt-28 px-2 lg:px-5 font-bold">
       <h1 className="text-xl text-center mb-4">
         Kami menangani berbagai kerusakan AC dan CCTV kesayangan Anda
       </h1>

@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { SessionProviders } from "@/components/SessionProvider";
 import { Providers } from "@/components/Providers";
+import ToasterContext from "@/components/ToasterContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,9 +20,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.className}`}>
+      <body className={`${inter.className} bg-light`}>
         <SessionProviders>
-          <Providers>{children}</Providers>
+          <Providers>
+            <ToasterContext />
+            {children}
+          </Providers>
         </SessionProviders>
       </body>
     </html>

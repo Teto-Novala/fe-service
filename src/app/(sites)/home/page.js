@@ -7,11 +7,11 @@ import Image from "next/image";
 import img1 from "../../../../public/service.jpg";
 import img2 from "../../../../public/service2.jpg";
 import img3 from "../../../../public/service3.jpg";
-import CardPromo from "@/components/CardPromo";
 import FormKontak from "@/components/FormKontak";
 import { useEffect, useState } from "react";
 import { apiInstance } from "@/axios/instance";
 import { useRouter } from "next/navigation";
+import CardInfo from "@/components/CardInfo";
 
 export default function Home() {
   const session = useSession();
@@ -31,10 +31,6 @@ export default function Home() {
         console.log(err);
       });
   }, []);
-
-  if (session?.data?.user?.role === "admin") {
-    router.push("/admin/transaksi");
-  }
 
   return (
     <div className="pt-16">
@@ -75,7 +71,7 @@ export default function Home() {
           {loading && <div>Loading....</div>}
           {loading === false &&
             dataInfo.map((data, index) => {
-              return <CardPromo key={index} data={data} />;
+              return <CardInfo key={index} data={data} />;
             })}
         </div>
       </section>

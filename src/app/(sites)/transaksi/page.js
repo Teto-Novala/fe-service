@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import List from "./List";
+import toast from "react-hot-toast";
 
 export default function TransaksiPage() {
   const [data, setData] = useState(null);
@@ -13,7 +14,8 @@ export default function TransaksiPage() {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated: () => {
-      alert("anda belum login");
+      toast.error("anda belum login");
+      // alert("anda belum login");
       redirect("/login");
     },
   });
@@ -35,7 +37,7 @@ export default function TransaksiPage() {
         .catch((error) => {
           // handle error
           // alert("anda belum login");
-          console.log(error);
+          // console.log(error);
         });
 
       apiInstance
@@ -52,7 +54,7 @@ export default function TransaksiPage() {
         .catch((error) => {
           // handle error
           // alert("anda belum login");
-          console.log(error);
+          // console.log(error);
         });
     }
   }, [token]);
@@ -63,6 +65,20 @@ export default function TransaksiPage() {
         <h1 className="text-center text-2xl md:text-3xl font-bold mb-4 xl:mb-8">
           Transaksi
         </h1>
+        <div className="flex flex-col gap-y-3 mb-5 md:flex-row md:justify-around w-[60%]">
+          <div className="flex items-center gap-x-2">
+            <div className="w-4 h-4 bg-red-500 rounded-lg"></div>
+            <p>Belum Bayar</p>
+          </div>
+          <div className="flex items-center gap-x-2">
+            <div className="w-4 h-4 bg-yellow-500 rounded-lg"></div>
+            <p>Belum Terverifikasi</p>
+          </div>
+          <div className="flex items-center gap-x-2">
+            <div className="w-4 h-4 bg-green-500 rounded-lg"></div>
+            <p>Sudah Diverifikasi</p>
+          </div>
+        </div>
         <div className="w-full xl:w-1/2 mx-auto p-3 flex flex-col gap-y-5 bg-light items-center">
           {loading && <div className="min-h-screen">Loading...</div>}
           {loadingUnpaid === false && (
